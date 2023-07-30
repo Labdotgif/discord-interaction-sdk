@@ -1,0 +1,28 @@
+{
+    "name": "labdotgif/discord-interaction-sdk",
+    "description": "Discord interaction PHP SDK",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Labdotgif\\DiscordInteraction\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sylvain Lorinet",
+            "email": "sylvain.lorinet@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "discord/interactions": "^2",
+        "guzzlehttp/guzzle": "^7",
+        "monolog/monolog": "^3",
+        "symfony/console": "^6",
+        "symfony/http-foundation": "^6",
+        "symfony/serializer": "^6",
+        "caseyamcl/guzzle_retry_middleware": "^2.8",
+        "symfony/event-dispatcher": "^6"
+    }
+}
