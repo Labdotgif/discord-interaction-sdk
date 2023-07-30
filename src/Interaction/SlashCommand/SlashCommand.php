@@ -6,8 +6,6 @@ use Labdotgif\DiscordInteraction\DiscordHttpClient;
 use Labdotgif\DiscordInteraction\DiscordServiceSpool;
 use Labdotgif\DiscordInteraction\Event\Interaction\SlashCommandInteractionDiscordEvent;
 use Labdotgif\DiscordInteraction\Interaction\DiscordInteraction;
-use InstantGaming\Core\User\Model\Repository\UserRepository;
-use InstantGaming\Core\User\Model\User;
 use Psr\Log\LoggerAwareTrait;
 
 abstract class SlashCommand extends DiscordInteraction
@@ -16,7 +14,6 @@ abstract class SlashCommand extends DiscordInteraction
 
     private SlashCommandBuilder $builder;
     private DiscordHttpClient $discordClient;
-    private UserRepository $userRepository;
     private DiscordServiceSpool $services;
 
     public function getDefinition(): array
@@ -77,19 +74,13 @@ abstract class SlashCommand extends DiscordInteraction
             'user_id' => $interaction->getUserId()
         ]);
 
-        $this->execute($this->getServices($interaction), $this->getUser(), $interaction);
-    }
-
-    public function getUserRepository(): UserRepository
-    {
-        return $this->userRepository;
+        $this->execute($this->getServices($interaction), $interaction);
     }
 
     abstract public function configure(SlashCommandBuilder $builder): void;
 
     abstract public function execute(
         DiscordServiceSpool $services,
-        User $user,
         SlashCommandInteractionDiscordEvent $interaction
     ): void;
 
