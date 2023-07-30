@@ -117,10 +117,6 @@ class DiscordGuildService extends AbstractDiscordService
 
             return true;
         } catch (DiscordException $e) {
-            if ('dev' === $this->env) {
-                throw $e;
-            }
-
             return false;
         }
     }
@@ -137,10 +133,6 @@ class DiscordGuildService extends AbstractDiscordService
                 )
             );
         } catch (DiscordException $e) {
-            if ('dev' === $this->env) {
-                throw $e;
-            }
-
             return false;
         }
 

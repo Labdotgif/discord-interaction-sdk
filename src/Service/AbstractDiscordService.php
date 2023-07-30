@@ -10,12 +10,10 @@ abstract class AbstractDiscordService
     private readonly DiscordHttpClient $httpClient;
     private ?string $userAccessToken;
     private bool $isUserAwareToken = false;
-    protected readonly string $env;
 
-    public function __construct(DiscordHttpClient $httpClient, string $env, string $userAccessToken = null)
+    public function __construct(DiscordHttpClient $httpClient, string $userAccessToken = null)
     {
         $this->httpClient = $httpClient;
-        $this->env = $env;
         $this->userAccessToken = $userAccessToken;
     }
 
