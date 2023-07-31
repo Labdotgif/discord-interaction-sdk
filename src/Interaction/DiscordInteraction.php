@@ -54,14 +54,20 @@ abstract class DiscordInteraction implements LoggerAwareInterface
         return true;
     }
 
+    protected function getLocale(DiscordInteractionEvent $event): string
+    {
+        $lang = preg_replace('/-.+/', '', $event->getLocale());
+
+        if (!in_array($lang, ['fr', 'pt', 'es', 'it', 'en', 'de', 'pl'])) {
+            $lang = 'en';
+        }
+
+        return $lang;
+    }
+
     protected function acknowledge(DiscordInteractionEvent $interaction): void
     {
         $this->services->interaction->acknowledge($interaction, isLoaderEphemeral: $this->isAcknowledgeEphemeral());
-    }
-
-    protected function getLang(DiscordInteractionEvent $event): string
-    {
-        return 'en';
     }
 
     #[Required]

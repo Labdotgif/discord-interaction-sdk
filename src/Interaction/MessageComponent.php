@@ -30,6 +30,11 @@ abstract class MessageComponent extends DiscordInteraction
         $this->execute($this->getServices($interaction), $interaction, $matches);
     }
 
+    protected function getLang(MessageComponentInteractionDiscordEvent $event): string
+    {
+        return $this->getLocale($event);
+    }
+
     abstract protected function execute(
         DiscordServiceSpool $services,
         MessageComponentInteractionDiscordEvent $interaction,

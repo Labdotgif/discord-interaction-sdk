@@ -77,6 +77,11 @@ abstract class SlashCommand extends DiscordInteraction
         $this->execute($this->getServices($interaction), $interaction);
     }
 
+    protected function getLang(SlashCommandInteractionDiscordEvent $event): string
+    {
+        return $this->getLocale($event);
+    }
+
     abstract public function configure(SlashCommandBuilder $builder): void;
 
     abstract public function execute(
