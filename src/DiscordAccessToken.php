@@ -61,6 +61,11 @@ class DiscordAccessToken
         return $this->expiresAt > (time() - 10);
     }
 
+    public function getExpiresAt(): int
+    {
+        return $this->expiresAt;
+    }
+
     public function setExpiresIn(int $expiresIn): static
     {
         $this->expiresAt = time() + $expiresIn;

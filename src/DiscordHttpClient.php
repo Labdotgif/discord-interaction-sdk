@@ -152,11 +152,11 @@ class DiscordHttpClient
     }
 
     public function authorize(
-        DiscordAccessToken $accessToken,
         string $code,
         string $redirectUri,
-        string $scope
-    ): DiscordServiceSpool {
+        string $scope,
+        DiscordAccessToken $accessToken = null
+    ): DiscordAccessToken {
         try {
             $response = $this->httpClient->post(self::BASE_URL . '/oauth2/token', [
                 RequestOptions::FORM_PARAMS => [
@@ -174,7 +174,7 @@ class DiscordHttpClient
 
         $content = json_decode((string) $response->getBody(), true);
 
-        if (!$accessToken->isScopesEqual($scope)) {
+        if (null === $accessToken || !$accessToken->isScopesEqual($scope)) {
             $accessToken = new DiscordAccessToken(
                 $content['access_token'],
                 $content['expires_in'],
@@ -188,7 +188,7 @@ class DiscordHttpClient
                 ->setExpiresIn($content['expires_in']);
         }
 
-        return $this->getServices($accessToken);
+        return $accessToken;
     }
 
     public function refreshToken(DiscordAccessToken $accessToken): void
