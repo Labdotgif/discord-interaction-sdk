@@ -61,7 +61,7 @@ class DiscordHttpClient
         string $scope,
         DiscordAccessToken $accessToken = null,
     ): ?DiscordServiceSpool {
-        if (null === $accessToken->getAccessToken() || !$accessToken->isScopesEqual($scope)) {
+        if (null === $accessToken || !$accessToken->isScopesEqual($scope)) {
             $this->redirect($authorizeUrl, $scope);
         } else if (!$accessToken->isValid()) {
             try {
@@ -174,7 +174,7 @@ class DiscordHttpClient
 
         $content = json_decode((string) $response->getBody(), true);
 
-        if (null === $accessToken->getAccessToken() || !$accessToken->isScopesEqual($scope)) {
+        if (!$accessToken->isScopesEqual($scope)) {
             $accessToken = new DiscordAccessToken(
                 $content['access_token'],
                 $content['expires_in'],
