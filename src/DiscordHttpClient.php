@@ -16,8 +16,6 @@ class DiscordHttpClient
 {
     private const BASE_URL = 'https://discord.com/api/v10';
 
-    public const SCOPE_DEFAULT = self::SCOPE_IDENTIFY;
-    public const SCOPE_BOT = self::SCOPE_DEFAULT;
     public const SCOPE_IDENTIFY = 'identify';
     public const SCOPE_GUILDS_JOIN = 'guilds.join';
     public const SCOPE_GUILDS = 'guilds';
@@ -60,8 +58,8 @@ class DiscordHttpClient
 
     public function authenticate(
         string $authorizeUrl,
+        string $scope,
         DiscordAccessToken $accessToken = null,
-        string $scope = DiscordHttpClient::SCOPE_DEFAULT,
     ): ?DiscordServiceSpool {
         if (null === $accessToken->getAccessToken() || !$accessToken->isScopesEqual($scope)) {
             $this->redirect($authorizeUrl, $scope);
@@ -157,7 +155,7 @@ class DiscordHttpClient
         DiscordAccessToken $accessToken,
         string $code,
         string $redirectUri,
-        string $scope = self::SCOPE_DEFAULT
+        string $scope
     ): DiscordServiceSpool {
         try {
             $response = $this->httpClient->post(self::BASE_URL . '/oauth2/token', [

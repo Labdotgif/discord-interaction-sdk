@@ -21,7 +21,7 @@ class ButtonDiscordComponent extends DiscordComponent
 
     public function setColor(ButtonDiscordStyleEnum $color): static
     {
-        if (ButtonDiscordStyleEnum::LINK->value === $this->payload['style']) {
+        if (isset($this->payload['style']) && ButtonDiscordStyleEnum::LINK->value === $this->payload['style']) {
             return $this;
         }
 
