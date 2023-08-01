@@ -159,4 +159,20 @@ class DiscordGuildService extends AbstractDiscordService
 
         return Response::HTTP_CREATED === $response['status_code'];
     }
+
+    public function remove(string $guildId, string $userId): bool
+    {
+        $response = $this->delete(
+            sprintf(
+                self::API_ROUTE_GUILD_MEMBER,
+                $guildId,
+                $userId
+            ),
+            headers: [
+                'X-Audit-Log-Reason' => 'No role selected after 1 week'
+            ]
+        );
+
+        return Response::HTTP_CREATED === $response['status_code'];
+    }
 }

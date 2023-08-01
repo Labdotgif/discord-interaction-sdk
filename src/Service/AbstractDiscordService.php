@@ -63,7 +63,7 @@ abstract class AbstractDiscordService
         return $this->httpClient->patch($url, $this->isUserAwareToken ? $this->userAccessToken : null, $queries, $parameters);
     }
 
-    protected function delete(string $url, array $queries = [], array $parameters = []): array
+    protected function delete(string $url, array $queries = [], array $parameters = [], array $headers = []): array
     {
         if ($this->isUserAwareToken && null === $this->userAccessToken) {
             throw new \LogicException('Cannot execute Discord API call "' . $url . '" without an access token');

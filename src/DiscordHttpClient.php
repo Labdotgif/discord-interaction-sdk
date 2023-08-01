@@ -101,9 +101,14 @@ class DiscordHttpClient
         return $this->send('post', $url, $userAccessToken, $queries, $parameters);
     }
 
-    public function delete(string $url, ?string $userAccessToken, array $queries = [], array $parameters = []): array
-    {
-        return $this->send('delete', $url, $userAccessToken, $queries, $parameters);
+    public function delete(
+        string $url,
+        ?string $userAccessToken,
+        array $queries = [],
+        array $parameters = [],
+        array $headers = []
+    ): array {
+        return $this->send('delete', $url, $userAccessToken, $queries, $parameters, $headers);
     }
 
     private function send(
@@ -111,7 +116,8 @@ class DiscordHttpClient
         string $url,
         ?string $userAccessToken,
         array $queries = [],
-        array|DiscordMessage $parameters = []
+        array|DiscordMessage $parameters = [],
+        array $headers = []
     ): array {
         $data = [
             RequestOptions::QUERY => $queries,
@@ -124,6 +130,10 @@ class DiscordHttpClient
 
         if ('get' !== $httpMethod) {
             $data[RequestOptions::JSON] = $parameters;
+        }
+
+        if (!empty($headers)) {
+            $data[RequestOptions::HEADERS] = $headers;
         }
 
         try {
