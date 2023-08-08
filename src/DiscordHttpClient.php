@@ -20,6 +20,7 @@ class DiscordHttpClient
     public const SCOPE_GUILDS_JOIN = 'guilds.join';
     public const SCOPE_GUILDS = 'guilds';
     public const SCOPE_CONNECTIONS = 'connections';
+    public const SCOPE_EMAIL = 'email';
 
     private readonly HttpClient $httpClient;
     private readonly string $env;
