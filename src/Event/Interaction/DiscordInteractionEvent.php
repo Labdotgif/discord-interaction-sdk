@@ -12,7 +12,7 @@ abstract class DiscordInteractionEvent extends DiscordEvent
     private readonly int $type;
     private readonly string $token;
     private readonly string $userId;
-    private readonly array $rawData;
+    private array $rawData;
     private readonly string $channelId;
     private string $locale;
 
@@ -66,5 +66,12 @@ abstract class DiscordInteractionEvent extends DiscordEvent
     public function getGuildMember(): array
     {
         return $this->rawData['member'];
+    }
+
+    public function addRole(string $roleId): void
+    {
+        if (!in_array($roleId, $this->getGuildMember()['roles'])) {
+            $this->rawData['member']['roles'][] = $roleId;
+        }
     }
 }
