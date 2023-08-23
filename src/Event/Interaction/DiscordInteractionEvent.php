@@ -62,4 +62,9 @@ abstract class DiscordInteractionEvent extends DiscordEvent
     {
         return $this->rawData;
     }
+
+    public function getGuildMember(): array
+    {
+        return $this->rawData['member'];
+    }
 }
