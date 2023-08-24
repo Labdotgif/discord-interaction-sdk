@@ -74,4 +74,18 @@ abstract class DiscordInteractionEvent extends DiscordEvent
             $this->rawData['member']['roles'][] = $roleId;
         }
     }
+
+    public function removeRole(string $roleId): void
+    {
+        $roles = $this->rawData['member']['roles'];
+
+        foreach ($this->rawData['member']['roles'] as $i => $currentRoleId) {
+            if ($roleId === $currentRoleId) {
+                unset($roles[$i]);
+                $this->rawData['member']['roles'] = $roles;
+
+                break;
+            }
+        }
+    }
 }
