@@ -88,4 +88,9 @@ abstract class DiscordInteractionEvent extends DiscordEvent
             }
         }
     }
+
+    public function setRoles(array $roles): void
+    {
+        $this->rawData['member']['roles'] = $roles;
+    }
 }
