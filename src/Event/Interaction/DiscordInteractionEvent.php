@@ -63,34 +63,88 @@ abstract class DiscordInteractionEvent extends DiscordEvent
         return $this->rawData;
     }
 
-    public function getGuildMember(): array
+    public function getGuildMember(string $userId = null): ?array
     {
-        return $this->rawData['member'];
-    }
-
-    public function addRole(string $roleId): void
-    {
-        if (!in_array($roleId, $this->getGuildMember()['roles'])) {
-            $this->rawData['member']['roles'][] = $roleId;
+        if (null === $userId || $userId === $this->getUserId()) {
+            return $this->rawData['member'];
         }
+
+        if (!isset($this->rawData['data']['resolved']['members'][$userId])) {
+            return null;
+        }
+
+        return $this->rawData['data']['resolved']['members'][$userId];
     }
 
-    public function removeRole(string $roleId): void
+    public function addRole(string $roleId, string $userId = null): void
     {
-        $roles = $this->rawData['member']['roles'];
+        if (null === $userId || $userId === $this->getUserId()) {
+            if (!in_array($roleId, $this->getGuildMember()['roles'])) {
+                $this->rawData['member']['roles'][] = $roleId;
+            }
+        } else {
+            if (!isset($this->rawData['data']['resolved']['members'][$userId])) {
+                return;
+            }
 
-        foreach ($this->rawData['member']['roles'] as $i => $currentRoleId) {
-            if ($roleId === $currentRoleId) {
-                unset($roles[$i]);
-                $this->rawData['member']['roles'] = $roles;
+            $roles = $this->rawData['data']['resolved']['members'][$userId]['roles'];
 
-                break;
+            if (!in_array($roleId, $roles)) {
+                $this->rawData['data']['resolved']['members'][$userId]['roles'][] = $roleId;
             }
         }
     }
 
-    public function setRoles(array $roles): void
+    public function removeRole(string $roleId, string $userId = null): void
     {
-        $this->rawData['member']['roles'] = $roles;
+        if (null === $userId || $userId === $this->getUserId()) {
+            $roles = $this->rawData['member']['roles'];
+
+            foreach ($roles as $i => $currentRoleId) {
+                if ($roleId === $currentRoleId) {
+                    unset($this->rawData['member']['roles'][$i]);
+
+                    break;
+                }
+            }
+        } else {
+            if (!isset($this->rawData['data']['resolved']['members'][$userId])) {
+                return;
+            }
+
+            $roles = $this->rawData['data']['resolved']['members'][$userId]['roles'];
+
+            foreach ($roles as $i => $currentRoleId) {
+                if ($roleId === $currentRoleId) {
+                    unset($this->rawData['data']['resolved']['members'][$userId]['roles'][$i]);
+
+                    break;
+                }
+            }
+        }
+    }
+
+    public function setRoles(array $roles, string $userId = null): void
+    {
+        if (null === $userId || $userId === $this->getUserId()) {
+            $this->rawData['member']['roles'] = $roles;
+        } else {
+            if (!isset($this->rawData['data']['resolved']['members'][$userId])) {
+                return;
+            }
+
+            $this->rawData['data']['resolved']['members'][$userId]['roles'] = $roles;
+        }
+    }
+
+    public function getRoles(string $userId = null): array
+    {
+        $member = $this->getGuildMember($userId);
+
+        if (null === $member) {
+            return [];
+        }
+
+        return $member['roles'];
     }
 }
