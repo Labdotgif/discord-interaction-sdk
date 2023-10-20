@@ -23,7 +23,7 @@ class DiscordHttpClient
     public const SCOPE_EMAIL = 'email';
 
     private readonly HttpClient $httpClient;
-    private readonly string $env;
+    protected readonly string $env;
     private readonly string $clientId;
     private readonly string $clientSecret;
     private readonly string $botToken;
@@ -152,11 +152,11 @@ class DiscordHttpClient
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getOAuthUrl(string $redirectUri, string $scope): string
+    public function getOAuthUrl(string $redirectUrl, string $scope): string
     {
         return 'https://discord.com/api/oauth2/authorize?' . http_build_query([
             'client_id' => $this->getClientId(),
-            'redirect_uri' => 'https://' . ('dev' === $this->env ? 'local' : 'www') . '.instant-gaming.com/' . $redirectUri,
+            'redirect_uri' => $redirectUrl,
             'response_type' => 'code',
             'scope' => $scope
         ]);
