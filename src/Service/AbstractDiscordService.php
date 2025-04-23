@@ -11,7 +11,7 @@ abstract class AbstractDiscordService
     private ?string $userAccessToken;
     private bool $isUserAwareToken = false;
 
-    public function __construct(DiscordHttpClient $httpClient, string $userAccessToken = null)
+    public function __construct(DiscordHttpClient $httpClient, ?string $userAccessToken = null)
     {
         $this->httpClient = $httpClient;
         $this->userAccessToken = $userAccessToken;

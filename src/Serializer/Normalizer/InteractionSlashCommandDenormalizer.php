@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class InteractionSlashCommandDenormalizer implements DenormalizerInterface
 {
-    public function denormalize($data, string $type, string $format = null, array $context = []): SlashCommandInteractionDiscordEvent
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): SlashCommandInteractionDiscordEvent
     {
         return new SlashCommandInteractionDiscordEvent($data['data']['name'], $data);
     }

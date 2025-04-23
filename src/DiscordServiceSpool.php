@@ -17,7 +17,7 @@ class DiscordServiceSpool
     public readonly DiscordInteractionService $interaction;
     public readonly DiscordChannelService $channel;
 
-    public function __construct(DiscordHttpClient $httpClient, string $userAccessToken = null)
+    public function __construct(DiscordHttpClient $httpClient, ?string $userAccessToken = null)
     {
         $this->userAccessToken = $userAccessToken;
 

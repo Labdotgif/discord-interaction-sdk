@@ -15,7 +15,7 @@ class DiscordMessageEmbed implements \JsonSerializable
         return new static();
     }
 
-    public function setAuthor(string $name, string $url = null, string $iconUrl = null): self
+    public function setAuthor(string $name, ?string $url = null, string $iconUrl = null): self
     {
         $this->content['author'] = [
             'name' => $name
@@ -89,7 +89,7 @@ class DiscordMessageEmbed implements \JsonSerializable
         return $this;
     }
 
-    public function setFooter(string $text, string $iconUrl = null): self
+    public function setFooter(string $text, ?string $iconUrl = null): self
     {
         $this->content['footer']['text'] = $text;
 

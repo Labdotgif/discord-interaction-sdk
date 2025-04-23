@@ -34,7 +34,7 @@ class DiscordHttpClient
         string $clientId,
         string $clientSecret,
         string $botToken,
-        HttpClient $httpClient = null
+        ?HttpClient $httpClient = null
     ) {
         if (null === $httpClient) {
             $stack = HandlerStack::create();
@@ -60,7 +60,7 @@ class DiscordHttpClient
     public function authenticate(
         string $authorizeUrl,
         string $scope,
-        DiscordAccessToken $accessToken = null,
+        ?DiscordAccessToken $accessToken = null,
     ): ?DiscordServiceSpool {
         if (null === $accessToken || !$accessToken->isScopesEqual($scope)) {
             $this->redirect($authorizeUrl, $scope);
@@ -166,7 +166,7 @@ class DiscordHttpClient
         string $code,
         string $redirectUri,
         string $scope,
-        DiscordAccessToken $accessToken = null
+        ?DiscordAccessToken $accessToken = null
     ): DiscordAccessToken {
         try {
             $response = $this->httpClient->post(self::BASE_URL . '/oauth2/token', [
@@ -225,7 +225,7 @@ class DiscordHttpClient
             ->setExpiresIn($content['expires_in']);
     }
 
-    public function getServices(DiscordAccessToken $accessToken = null): DiscordServiceSpool
+    public function getServices(?DiscordAccessToken $accessToken = null): DiscordServiceSpool
     {
         if (!isset($this->services) || null !== $accessToken) {
             if (null !== $accessToken) {

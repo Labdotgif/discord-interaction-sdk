@@ -8,7 +8,7 @@ class ButtonDiscordComponent extends DiscordComponent
     {
     }
 
-    public static function create(string $label = null): static
+    public static function create(?string $label = null): static
     {
         $button = new static();
 

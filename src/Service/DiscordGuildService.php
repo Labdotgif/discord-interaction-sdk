@@ -38,7 +38,7 @@ class DiscordGuildService extends AbstractDiscordService
         }
     }
 
-    public function getMembers(string $guildId, int $limit = 100, string $afterUserId = null): ?array
+    public function getMembers(string $guildId, int $limit = 100, ?string $afterUserId = null): ?array
     {
         $query = [
             'limit' => $limit
@@ -76,7 +76,7 @@ class DiscordGuildService extends AbstractDiscordService
         }
     }
 
-    public function addRole(string $guildId, string $memberId, string|array $roles, array $guildMember = null): bool
+    public function addRole(string $guildId, string $memberId, string|array $roles, ?array $guildMember = null): bool
     {
         if (!is_array($roles)) {
             $roles = [$roles];

@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class InteractionMessageComponentDenormalizer implements DenormalizerInterface
 {
-    public function denormalize($data, string $type, string $format = null, array $context = []): MessageComponentInteractionDiscordEvent
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): MessageComponentInteractionDiscordEvent
     {
         return new MessageComponentInteractionDiscordEvent(
             DiscordComponentTypeEnum::from($data['data']['component_type']),

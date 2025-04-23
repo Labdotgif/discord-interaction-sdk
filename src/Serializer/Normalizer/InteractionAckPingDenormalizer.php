@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class InteractionAckPingDenormalizer implements DenormalizerInterface
 {
-    public function denormalize($data, string $type, string $format = null, array $context = []): mixed
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): mixed
     {
         return new AckPingInteractionDiscordEvent($data);
     }

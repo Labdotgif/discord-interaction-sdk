@@ -63,7 +63,7 @@ abstract class DiscordInteractionEvent extends DiscordEvent
         return $this->rawData;
     }
 
-    public function getGuildMember(string $userId = null): ?array
+    public function getGuildMember(?string $userId = null): ?array
     {
         if (null === $userId || $userId === $this->getUserId()) {
             return $this->rawData['member'];
@@ -76,7 +76,7 @@ abstract class DiscordInteractionEvent extends DiscordEvent
         return $this->rawData['data']['resolved']['members'][$userId];
     }
 
-    public function addRole(string $roleId, string $userId = null): void
+    public function addRole(string $roleId, ?string $userId = null): void
     {
         if (null === $userId || $userId === $this->getUserId()) {
             if (!in_array($roleId, $this->getGuildMember()['roles'])) {
@@ -95,7 +95,7 @@ abstract class DiscordInteractionEvent extends DiscordEvent
         }
     }
 
-    public function removeRole(string $roleId, string $userId = null): void
+    public function removeRole(string $roleId, ?string $userId = null): void
     {
         if (null === $userId || $userId === $this->getUserId()) {
             $roles = $this->rawData['member']['roles'];
@@ -124,7 +124,7 @@ abstract class DiscordInteractionEvent extends DiscordEvent
         }
     }
 
-    public function setRoles(array $roles, string $userId = null): void
+    public function setRoles(array $roles, ?string $userId = null): void
     {
         if (null === $userId || $userId === $this->getUserId()) {
             $this->rawData['member']['roles'] = $roles;
@@ -137,7 +137,7 @@ abstract class DiscordInteractionEvent extends DiscordEvent
         }
     }
 
-    public function getRoles(string $userId = null): array
+    public function getRoles(?string $userId = null): array
     {
         $member = $this->getGuildMember($userId);
 

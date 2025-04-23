@@ -12,7 +12,7 @@ class DiscordUserService extends AbstractDiscordService
     public const int PERMISSION_ADMINISTRATOR = 1 << 3;
     public const int PERMISSION_MANAGE_GUILD = 1 << 5;
 
-    public function __construct(DiscordHttpClient $httpClient, string $userAccessToken = null)
+    public function __construct(DiscordHttpClient $httpClient, ?string $userAccessToken = null)
     {
         parent::__construct($httpClient, $userAccessToken);
 
