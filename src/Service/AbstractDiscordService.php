@@ -31,8 +31,12 @@ abstract class AbstractDiscordService
         return $this->httpClient->get($url, $this->isUserAwareToken ? $this->userAccessToken : null, $queries);
     }
 
-    protected function post(string $url, array $queries = [], array|DiscordMessage $parameters = []): array
-    {
+    protected function post(
+        string $url,
+        array $queries = [],
+        array|DiscordMessage $parameters = [],
+        array $headers = []
+    ): array {
         if ($this->isUserAwareToken && null === $this->userAccessToken) {
             throw new \LogicException('Cannot execute Discord API call "' . $url . '" without an access token');
         }
@@ -41,7 +45,8 @@ abstract class AbstractDiscordService
             $url,
             $this->isUserAwareToken ? $this->userAccessToken : null,
             $queries,
-            $parameters
+            $parameters,
+            $headers
         );
     }
 
@@ -73,7 +78,8 @@ abstract class AbstractDiscordService
             $url,
             $this->isUserAwareToken ? $this->userAccessToken : null,
             $queries,
-            $parameters
+            $parameters,
+            $headers
         );
     }
 

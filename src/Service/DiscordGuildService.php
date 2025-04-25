@@ -2,16 +2,19 @@
 
 namespace Labdotgif\DiscordInteraction\Service;
 
+use Labdotgif\DiscordInteraction\ChannelTypeEnum;
 use Labdotgif\DiscordInteraction\Exception\DiscordException;
 use Symfony\Component\HttpFoundation\Response;
 
 class DiscordGuildService extends AbstractDiscordService
 {
     private const API_ROUTE_FROM_INVITATION = '/invite/%s';
+    private const API_ROUTE_GUILDS = '/guilds/%s';
     /** @see https://discord.com/developers/docs/resources/guild#add-guild-member */
-    private const API_ROUTE_GUILD_MEMBERS = '/guilds/%s/members';
+    private const API_ROUTE_GUILD_MEMBERS = self::API_ROUTE_GUILDS . '/members';
     private const API_ROUTE_GUILD_MEMBER = self::API_ROUTE_GUILD_MEMBERS . '/%s';
-    private const API_ROUTE_GUILD_MEMBER_ROLE = '/guilds/%s/members/%s/roles/%s';
+    private const API_ROUTE_GUILD_MEMBER_ROLE = self::API_ROUTE_GUILD_MEMBER . '/roles/%s';
+    private const API_ROUTE_GUILD_CHANNELS = self::API_ROUTE_GUILDS . '/channels';
 
     public function findOneByInvitationLink(string $invitationLink): ?array
     {
@@ -174,5 +177,37 @@ class DiscordGuildService extends AbstractDiscordService
         );
 
         return Response::HTTP_CREATED === $response['status_code'];
+    }
+
+    public function createTextChannel(
+        string $guildId,
+        string $name,
+        ?string $categoryId = null,
+        ?string $topic = null,
+        ?string $reason = null
+    ): array {
+        $parameters = [
+            'name' => $name,
+            'type' => ChannelTypeEnum::GUILD_TEXT->value,
+        ];
+
+        $headers = [];
+
+        if (null !== $reason) {
+            $headers['X-Audit-Log-Reason'] = $reason;
+        }
+
+        $response = $this->post(
+            sprintf(self::API_ROUTE_GUILD_CHANNELS, $guildId),
+            parameters: [
+                'name' => $name,
+                'type' => ChannelTypeEnum::GUILD_TEXT->value,
+                'topic' => $topic,
+                'parent_id' => $categoryId
+            ],
+            headers: $headers
+        );
+
+        return $response;
     }
 }

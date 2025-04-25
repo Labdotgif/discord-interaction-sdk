@@ -97,9 +97,14 @@ class DiscordHttpClient
         return $this->send('patch', $url, $userAccessToken, $queries, $parameters);
     }
 
-    public function post(string $url, ?string $userAccessToken, array $queries = [], array|DiscordMessage $parameters = []): array
-    {
-        return $this->send('post', $url, $userAccessToken, $queries, $parameters);
+    public function post(
+        string $url,
+        ?string $userAccessToken,
+        array $queries = [],
+        array|DiscordMessage $parameters = [],
+        array $headers = []
+    ): array {
+        return $this->send('post', $url, $userAccessToken, $queries, $parameters, $headers);
     }
 
     public function delete(
@@ -122,19 +127,15 @@ class DiscordHttpClient
     ): array {
         $data = [
             RequestOptions::QUERY => $queries,
-            RequestOptions::HEADERS => [
+            RequestOptions::HEADERS => array_merge($headers, [
                 'Authorization' => null === $userAccessToken
                     ? 'Bot ' . $this->botToken
                     : 'Bearer ' . $userAccessToken
-            ]
+            ])
         ];
 
         if ('get' !== $httpMethod) {
             $data[RequestOptions::JSON] = $parameters;
-        }
-
-        if (!empty($headers)) {
-            $data[RequestOptions::HEADERS] = $headers;
         }
 
         try {
@@ -144,9 +145,15 @@ class DiscordHttpClient
         }
 
         if (in_array($response->getStatusCode(), [Response::HTTP_NO_CONTENT, Response::HTTP_CREATED])) {
-            return [
-                'status_code' => Response::HTTP_NO_CONTENT
+            $statusCodeBody = [
+                'status_code' => $response->getStatusCode()
             ];
+
+            if (Response::HTTP_NO_CONTENT === $response->getStatusCode()) {
+                return $statusCodeBody;
+            }
+
+            return array_merge($statusCodeBody, json_decode($response->getBody()->getContents(), true));
         }
 
         return json_decode($response->getBody()->getContents(), true);
